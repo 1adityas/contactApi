@@ -9,7 +9,7 @@ namespace contactApi.Data
         public ContactsAPIDbContext(DbContextOptions options) : base(options)
         {
         }
-
+ 
         public DbSet<Contacts>Contacts{ get; set; }   
 
     }
