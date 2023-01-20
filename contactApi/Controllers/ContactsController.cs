@@ -11,6 +11,8 @@ namespace contactApi.Controllers
     public class ContactsController : Controller
     {
         private readonly ContactsAPIDbContext dbContext;
+        //private string aditya="aditya";
+
         public ContactsController(ContactsAPIDbContext dbContext)
         {
             this.dbContext= dbContext;
@@ -18,7 +20,8 @@ namespace contactApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetConacts()
         {
-            return Ok(await dbContext.Contacts.ToListAsync());//cant explictly convert list to action result there fore using  
+            string aditya = "";
+            return Ok(await dbContext.Contacts.Where(acc => acc.FullName == "aditya").ToListAsync());//cant explictly convert list to action result there fore using  
         }
 
         [HttpGet]
