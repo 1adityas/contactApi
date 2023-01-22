@@ -15,8 +15,42 @@ namespace contactApi.Controllers
 
         public ContactsController(ContactsAPIDbContext dbContext)
         {
-            this.dbContext= dbContext;
+            this.dbContext = dbContext;
         }
+
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] Contacts obj)
+        {
+            if (obj == null) return BadRequest();
+            
+            var user=await dbContext.Contacts.FirstOrDefaultAsync(x=>x.Id==obj.Id && x.Password==obj.Password);
+            if (user == null) return NotFound();
+
+            return Ok(new
+            {
+                Message="login Successful"
+            }
+            ) ;
+
+        }
+
+        //already implementing it using post request.
+        //[HttpPost("register")]
+        //public async Task<IActionResult> RegisterUser([FromBody] Contacts obj)
+        //{
+        //    if (obj == null) return BadRequest();
+
+        //    var user = await dbContext.Contacts.FirstOrDefaultAsync(x => x.Id == obj.Id && x.Password == obj.Password);
+        //    if (user == null) return NotFound();
+
+        //    return Ok(new
+        //    {
+        //        Message = "login Successful"
+        //    }
+        //    );
+
+        //}
+
         [HttpGet]
         public async Task<IActionResult> GetConacts()
         {
@@ -55,7 +89,8 @@ namespace contactApi.Controllers
                 Address = addContactRequest.Address,
                 Email = addContactRequest.Email,
                 FullName = addContactRequest.FullName,
-                Phone = addContactRequest.Phone//if i pass 000 its showing some error somehting.
+                Phone = addContactRequest.Phone,//if i pass 000 its showing some error somehting.
+                Password= addContactRequest.Password
             };
             await dbContext.Contacts.AddAsync(contact);
             await dbContext.SaveChangesAsync(); 
